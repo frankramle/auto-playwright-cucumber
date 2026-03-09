@@ -1,0 +1,13 @@
+{
+  "name": "auto-playwright-cucumber",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "cucumber-js",
+    "test:headless": "set HEADLESS=true&& cucumber-js",
+    "test:headed": "set HEADLESS=false&& cucumber-js"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^9.0.0",
+    "playwright": "^1.40.0"
+  }
+}
