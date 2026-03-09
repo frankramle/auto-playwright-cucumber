@@ -1,3 +1,4 @@
+/** @constant {Object} Selectors for inventory page elements */
 const SELECTORS = {
   PRODUCTS_TITLE: '.title',
   ADD_BACKPACK: '#add-to-cart-sauce-labs-backpack',
@@ -7,8 +8,14 @@ const SELECTORS = {
   LOGOUT_LINK: '#logout_sidebar_link'
 }
 
+/**
+ * Page Object for the Inventory/Products page.
+ */
 class InventoryPage {
 
+  /**
+   * @param {import('playwright').Page} page - Playwright page instance
+   */
   constructor(page) {
     this.page = page
     this.productsTitle = page.locator(SELECTORS.PRODUCTS_TITLE)
@@ -19,28 +26,19 @@ class InventoryPage {
     this.logoutLink = page.locator(SELECTORS.LOGOUT_LINK)
   }
 
-  async isProductsVisible() {
-    await this.productsTitle.waitFor({ state: 'visible', timeout: 10000 })
-    return await this.productsTitle.isVisible()
-  }
-
+  /**
+   * Adds a product to the cart by name.
+   * @param {string} productName - Product name to add
+   */
   async addProductToCart(productName) {
     const productId = productName.toLowerCase().replace(/ /g, '-')
     const addButton = this.page.locator(`#add-to-cart-${productId}`)
-    await addButton.waitFor({ state: 'visible' })
     await addButton.click()
-    await this.cartBadge.waitFor({ state: 'visible' })
   }
 
-  async getCartCount() {
-    await this.cartBadge.waitFor({ state: 'visible' })
-    return await this.cartBadge.textContent()
-  }
-
+  /** Logs out the current user. */
   async logout() {
-    await this.menuButton.waitFor({ state: 'visible' })
     await this.menuButton.click()
-    await this.logoutLink.waitFor({ state: 'visible' })
     await this.logoutLink.click()
     await this.page.waitForURL('**/')
   }

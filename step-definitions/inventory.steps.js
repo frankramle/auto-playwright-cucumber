@@ -1,12 +1,11 @@
 const { When, Then } = require('@cucumber/cucumber')
-const assert = require('assert')
+const { expect } = require('@playwright/test')
 
 const InventoryPage = require('../pages/inventoryPage')
 
 Then('I should see the products page', async function () {
   this.inventoryPage = new InventoryPage(this.page)
-  const visible = await this.inventoryPage.isProductsVisible()
-  assert.strictEqual(visible, true)
+  await expect(this.inventoryPage.productsTitle).toBeVisible()
 })
 
 When('I add {string} to the cart', async function (productName) {
@@ -14,8 +13,7 @@ When('I add {string} to the cart', async function (productName) {
 })
 
 Then('I should see {string} item in the cart', async function (count) {
-  const cartCount = await this.inventoryPage.getCartCount()
-  assert.strictEqual(cartCount, count)
+  await expect(this.inventoryPage.cartBadge).toHaveText(count)
 })
 
 Then('I logout', async function () {
